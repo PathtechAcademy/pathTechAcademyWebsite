@@ -27,28 +27,7 @@ export const signUp = async ({ email, password, fullName, role = 'student' }: Si
       },
     },
   });
-  // Ensure we have a valid user ID before querying the `users` table
-  const userId = data.user?.id;
-  if (!userId) {
-    throw new Error('User ID not found after sign-up');
-  }
 
-
-  const { data: userData, error: fetchError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single(); // Ensure we get only one row
-
-  if (fetchError) {
-    console.error('Error fetching user data:', fetchError.message);
-    throw new Error(fetchError.message);
-  }
-
-  return { data, userData }; // Return both auth data and user table data
- 
-  
-  
   
   if (error) {
     console.error('Sign-up error:', error.message);

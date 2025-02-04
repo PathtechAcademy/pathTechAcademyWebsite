@@ -12,7 +12,7 @@ function App() {
 const [showSignUp, setShowSignUp] = useState(false);
 const [isSignIn, setIsSignIn] = useState(true);
 const [isLoading, setIsLoading] = useState(false);
-const [signRole, setSignRole] = useState("")
+const [userData1, setUserData1] = useState<{ id: string; email: string; full_name:String; role: string | undefined } | null>(null);
 const [user, setUser] = useState<{ id: string; email: string; role: string | undefined } | null>(null);
 
 const toggleAuth = () => {
@@ -85,7 +85,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       if (userData) {
         console.log(userData)
       }
-      setSignRole(userData.role)
+      setUserData1(userData)
 
       
       toast.success('Successfully signed in!');
@@ -102,39 +102,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(false);
   }
 };
-  if (signRole == "admin") {
-    return (
-      <>
-        <nav className="bg-white shadow-sm fixed w-full z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex items-center">
-                <BookOpen className="h-8 w-8 text-indigo-600" />
-                <span className="ml-2 text-xl font-bold text-gray-900">PathTech Academy</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-600">{user?.email}</span>
-                <button
-                  onClick={handleSignOut}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-                >
-                  Sign Out
-                </button>
-              </div>
-            </div>
-          </div>
-        </nav>
-        <div className="pt-16">
-          {user && <AdminDashboard user={user} />}
-        </div>
-      </>
-    );
-  }
+  
   // If user is logged in, show appropriate dashboard
   if (user) {
     return (
       <>
-        {/* <nav className="bg-white shadow-sm fixed w-full z-10">
+        <nav className="bg-white shadow-sm fixed w-full z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center">
@@ -152,9 +125,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
               </div>
             </div>
           </div>
-        </nav> */}
+        </nav>
         <div>
-          {user.role === "admin" ? <AdminDashboard user={user} /> : <Dashboard user={user} />}
+          {userData1 && userData1.role === "admin" ? <AdminDashboard user={user} /> : <Dashboard user={user} />}
         </div>
       </>
     );

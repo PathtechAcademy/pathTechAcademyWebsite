@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import { toast } from 'react-hot-toast';
-import type { Course, Payment, Users as User } from '../types/types';
+import type { Course, Payment, Users as user1 } from '../types/types';
 
 const ADMIN_SECTIONS = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -42,7 +42,7 @@ interface AdminDashboardProps {
   user: {
     id: string;
     email: string;
-    isAdmin: boolean;
+    role: string | undefined;
   };
 }
 
@@ -55,7 +55,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     pendingPayments: 0,
   });
   const [courses, setCourses] = useState<Course[]>([]);
-  const [students, setStudents] = useState<User[]>([]);
+  const [students, setStudents] = useState<user1[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddCourse, setShowAddCourse] = useState(false);
@@ -81,10 +81,10 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
 
       // Fetch students (users)
       const { data: studentsData } = await supabase
-        .from('profiles')
+        .from('users')
         .select('*')
         .order('created_at', { ascending: false });
-
+      
       if (studentsData) setStudents(studentsData);
 
       // Fetch payments
